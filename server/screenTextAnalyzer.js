@@ -1,10 +1,9 @@
 import "dotenv/config";
 import OpenAI from "openai";
-import fs from "fs";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-async function analyzeText(screenText) {
+export async function analyzeText(screenText) {
   const prompt = `
 You detect cyberbully and harmful online behavior in text shown on a user's screen.
 
@@ -43,17 +42,3 @@ ${screenText}
 
   return JSON.parse(text.slice(jsonStart, jsonEnd + 1));
 }
-
-// ---- read text from file ----
-const screenTextFromFile = fs.readFileSync("inputText.txt", "utf-8");
-
-// ---- analyze ----
-analyzeText(screenTextFromFile)
-  .then((result) => {
-    console.log("Result JSON:");
-    console.dir(result, { depth: null });
-  })
-  .catch((err) => {
-    console.error("Error:");
-    console.error(err);
-  });
