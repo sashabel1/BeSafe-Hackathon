@@ -1,0 +1,101 @@
+#safe-chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 450px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2); 
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    direction: rtl;
+    border: 1px solid #ffdde1;
+}
+
+#chat-header {
+    background: #ff758c; 
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+#chat-close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+#chat-close-btn:hover {
+    transform: scale(1.1);
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #fff0f3; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.bot-message {
+    background: #ffffff;
+    color: #444;
+    align-self: flex-start;
+    border-bottom-right-radius: 2px; 
+}
+
+.user-message {
+    background: #ff758c; 
+    color: white;
+    align-self: flex-end;
+    border-bottom-left-radius: 2px;
+}
+
+#chat-options {
+    padding: 15px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid #ffeef0;
+}
+
+.option-btn {
+    background: white;
+    border: 1px solid #ff758c; 
+    color: #ff758c; 
+    padding: 10px;
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.option-btn:hover {
+    background: #ff758c; 
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 117, 140, 0.3);
+}

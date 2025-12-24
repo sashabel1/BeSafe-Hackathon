@@ -9,13 +9,13 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
+      "js": ["content.js","overlay.js"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["overlay.js", "overlay.css"],
+      "resources": ["overlay.css"],
       "matches": ["<all_urls>"]
     }
   ]

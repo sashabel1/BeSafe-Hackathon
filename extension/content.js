@@ -16,7 +16,7 @@ async function scanText(text) {
   }
 }
 
-console.log("🟢 Safety Scanner content script loaded");
+console.log("Safety Scanner content script loaded");
 
 // simple check
 setTimeout(async () => {
@@ -27,21 +27,8 @@ setTimeout(async () => {
   console.log("Scan result:", result);
 
   if (result?.is_harmful) {
-    showOverlay();
+    createChatBot();
   }
 }, 2000);
 
-function showOverlay() {
-  console.log("🚨 Showing overlay");
-
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = chrome.runtime.getURL("overlay.css");
-
-  const script = document.createElement("script");
-  script.src = chrome.runtime.getURL("overlay.js");
-
-  document.documentElement.appendChild(link);
-  document.documentElement.appendChild(script);
-}
 
