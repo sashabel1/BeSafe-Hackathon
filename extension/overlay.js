@@ -86,7 +86,63 @@ function handleOptionClick(id, text) {
             case 4:
                 addMessage("bot", "אני כאן. ספרי לי מה קרה? אני מקשיבה.");
                 document.getElementById('chat-options').style.display = 'none'; 
+                showInputArea();
                 break;
         }
     }, 600);
+}
+
+function showInputArea() {
+    if (document.getElementById('chat-input-area')) return;
+
+    const chatContainer = document.getElementById('safe-chat-container');
+    
+    const inputArea = document.createElement('div');
+    inputArea.id = 'chat-input-area';
+    inputArea.innerHTML = `
+        <input type="text" id="user-input" placeholder="כתבי הודעה..." autocomplete="off">
+        <button id="send-btn">➤</button>
+    `;
+    
+    chatContainer.appendChild(inputArea);
+
+    document.getElementById('send-btn').addEventListener('click', sendMessage);
+
+    document.getElementById('user-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    document.getElementById('user-input').focus();
+}
+
+async function sendMessage() {
+    const inputField = document.getElementById('user-input');
+    const text = inputField.value.trim();
+    
+    if (!text) return;
+
+    addMessage("user", text);
+    inputField.value = ''; 
+    try {
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+        
+        if (data.reply.includes("[SHOW_OPTIONS]")) {
+            addMessage("bot", "בטח, הנה האפשרויות שוב:");
+            document.getElementById('chat-input-area').remove(); 
+            document.getElementById('chat-options').style.display = 'flex'; 
+            showOptions(); 
+        } else {
+            addMessage("bot", data.reply);
+        }
+
+    } catch (err) {
+        console.error(err);
+        addMessage("bot", "יש בעיה בתקשורת, נסי שוב מאוחר יותר.");
+    }
 }

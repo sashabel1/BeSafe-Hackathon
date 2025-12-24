@@ -99,3 +99,46 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(255, 117, 140, 0.3);
 }
+
+#chat-input-area {
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #ffeef0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ffdde1;
+    border-radius: 20px;
+    outline: none;
+    font-family: inherit;
+}
+
+#user-input:focus {
+    border-color: #ff758c;
+}
+
+#send-btn {
+    background: #ff758c;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 3px; 
+}
+
+#send-btn:hover {
+    background: #ff4d6d;
+    transform: scale(1.1);
+}
