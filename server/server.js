@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import "dotenv/config";
-import { analyzeText } from './screenTextAnalyzer.js';
+import { analyzeText , getChatResponse} from './screenTextAnalyzer.js';
 
 const app = express();
 app.use(cors()); 
@@ -26,6 +26,18 @@ app.post('/analyze', async (req, res) => {
             error: "Failed to process request",
             details: error.message 
         });
+    }
+});
+
+app.post('/chat', async (req, res) => {
+    try {
+        const { text } = req.body;
+        const botReply = await getChatResponse(text || "");
+        res.json({ reply: botReply });
+
+    } catch (error) {
+        console.error("!!! Chat Error !!!", error.message);
+        res.status(500).json({ reply: "server error" });
     }
 });
 
