@@ -1,47 +1,32 @@
 import express from 'express';
 import cors from 'cors';
 import "dotenv/config";
-import { analyzeText , getChatResponse} from './screenTextAnalyzer.js';
+import { connectDB } from "./config/db.js";
+import usersRoutes from "./routes/usersRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
+
+
 
 const app = express();
 app.use(cors()); 
 app.use(express.json());
+app.use("/users", usersRoutes);
+app.use("/", aiRoutes);
 
-app.post('/analyze', async (req, res) => {
-    try {
-        const { text } = req.body;
+const PORT = process.env.PORT || 3000;
 
-        if (!text) {
-            return res.status(400).json({ error: "No text provided" });
-        }
+async function startServer() {
+  try {
+    await connectDB(process.env.MONGO_URI);
 
-        const result = await analyzeText(text);
-        res.json(result);
+    app.listen(PORT, () => {
+      console.log(` Server running on http://localhost:${PORT}`);
+    });
 
-    } catch (error) {
-        console.error("!!! Server Error !!!", error.message);
-        
-        res.status(500).json({ 
-            is_harmful: false, 
-            error: "Failed to process request",
-            details: error.message 
-        });
-    }
-});
+  } catch (err) {
+    console.error(" Failed to connect to DB:", err.message);
+    throw err;
+  }
+}
 
-app.post('/chat', async (req, res) => {
-    try {
-        const { text } = req.body;
-        const botReply = await getChatResponse(text || "");
-        res.json({ reply: botReply });
-
-    } catch (error) {
-        console.error("!!! Chat Error !!!", error.message);
-        res.status(500).json({ reply: "server error" });
-    }
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+startServer();
