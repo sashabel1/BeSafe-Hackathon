@@ -135,7 +135,7 @@ export default function ChatPage() {
         if (data.isBlocked) {
             setTimeout(() => {
                 alert("Your account has been blocked due to repeated violations.");
-                window.location.href = '/'; 
+                window.location.href = '/';  // TODO: Redirect to home or login page  + logout the user
             }, 2000);
         }
         return; // Stop here, do not send the message
