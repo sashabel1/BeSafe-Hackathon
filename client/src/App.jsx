@@ -1,8 +1,12 @@
 import { Link, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import styles from './styles/App.module.css';
 import projectLogo from './assets/project-logo.png'
 import HomePage from './pages/HomePage'
 import ChatPage from './pages/ChatPage'
+
 
 
 function App() {
@@ -21,6 +25,7 @@ function App() {
             <Route path="/chat" element={<ChatPage />} />
           </Routes>
         </main>
+        <ToastContainer position="top-center" />
         <footer className={styles.footer}>
           <p>&copy; 2024 My App</p>
         </footer>

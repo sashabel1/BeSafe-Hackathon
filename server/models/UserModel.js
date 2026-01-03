@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema(
 
     avatarUrl: { type: String, default: "" },
     profileCompleted: { type: Boolean, default: false },
+
+    //property to track user violations 
+    strikes: { type: Number, default: 0 }, 
+    isBlocked: { type: Boolean, default: false }    
   },
   { timestamps: true } // createdAt, updatedAt
 );

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { toast } from 'react-toastify';
 import styles from "../styles/ChatPage.module.css";
 
 function formatTime(ts) {
@@ -20,8 +21,9 @@ function pickFakeReply(text) {
 }
 
 export default function ChatPage() {
+  const MY_REAL_ID ="6957d9bf79cd5b94625a9d8d";
   // TODO: להחליף ל-auth אמיתי
-  const me = useMemo(() => ({ id: "me", name: "User 1" }), []);
+  const me = useMemo(() => ({ id:MY_REAL_ID , name: "Me (Demo)" }), []);
 
   const API_BASE = useMemo(
     () => (import.meta.env.VITE_SERVER_API_URL || "").replace(/\/$/, ""),
@@ -38,6 +40,9 @@ export default function ChatPage() {
 
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [usersError, setUsersError] = useState(null);
+
+  // New state to handle the loading state while the AI checks the message
+  const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,11 +61,14 @@ export default function ChatPage() {
 
         const dbUsers = await res.json();
 
-        const mapped = dbUsers.map((u) => ({
-          id: u._id,
-          name: u.nickname || u.email || "User",
-          status: "online", // זמני
-        }));
+        // Filter out current user so you don't chat with yourself
+        const mapped = dbUsers
+          .filter(u => u._id !== MY_REAL_ID)
+          .map((u) => ({
+            id: u._id,
+            name: u.nickname || u.email || "User",
+            status: "online",
+          }));
 
         if (cancelled) return;
 
@@ -98,28 +106,71 @@ export default function ChatPage() {
     return `${last.sender === "me" ? "You: " : ""}${last.text}`;
   };
 
-  const sendMessage = () => {
+
+  // NEW: Send message handler with AI validation
+  const sendMessage = async () => {
     const text = input.trim();
-    if (!text || !activeUserId) return;
+    if (!text || !activeUserId || isChecking) return;
 
-    const myMsg = { id: nextId(), sender: "me", text, ts: Date.now() };
+    // 1. Lock the interface
+    setIsChecking(true);
 
-    setConversations((prev) => ({
-      ...prev,
-      [activeUserId]: [...(prev[activeUserId] ?? []), myMsg],
-    }));
+    try {
+      // 2. Validate message with the server
+      const response = await fetch(`${API_BASE}/ai/validate-message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          userId: me.id, 
+          text: text 
+        })
+      });
 
-    setInput("");
+      const data = await response.json();
 
-    // TODO: להחליף לקריאה לשרת /chat
-    const replyText = pickFakeReply(text);
-    window.setTimeout(() => {
-      const theirMsg = { id: nextId(), sender: "them", text: replyText, ts: Date.now() };
+      // 3. Handle blocked content
+      if (!data.allowed) {
+        toast.error(data.reason || "Message blocked due to harmful content.");
+
+        if (data.isBlocked) {
+            setTimeout(() => {
+                alert("Your account has been blocked due to repeated violations.");
+                window.location.href = '/';  // TODO: Redirect to home or login page  + logout the user
+            }, 2000);
+        }
+        return; // Stop here, do not send the message
+      }
+
+      // Optional: Warn user if they received a strike
+      if (data.strikes > 0) {
+         toast.warning(`Warning: You have ${data.strikes} strikes.`);
+      }
+      // 4. If allowed, proceed with sending (Client-side logic)
+      const myMsg = { id: nextId(), sender: "me", text, ts: Date.now() };
+
       setConversations((prev) => ({
         ...prev,
-        [activeUserId]: [...(prev[activeUserId] ?? []), theirMsg],
+        [activeUserId]: [...(prev[activeUserId] ?? []), myMsg],
       }));
-    }, 600);
+
+      setInput("");
+      // Fake reply simulation
+      const replyText = pickFakeReply(text);
+      window.setTimeout(() => {
+        const theirMsg = { id: nextId(), sender: "them", text: replyText, ts: Date.now() };
+        setConversations((prev) => ({
+          ...prev,
+          [activeUserId]: [...(prev[activeUserId] ?? []), theirMsg],
+        }));
+      }, 1000);
+
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Server connection error");
+    } finally {
+      // 5. Release the lock
+      setIsChecking(false);
+    }
   };
 
   const onKeyDown = (e) => {
@@ -204,11 +255,16 @@ export default function ChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder={`Message ${activeUser?.name ?? ""}`}
-            disabled={!activeUserId}
+            placeholder={isChecking ? "Sending..." : `Message ${activeUser?.name ?? ""}`}
+            disabled={!activeUserId || isChecking}
+            style={{ opacity: isChecking ? 0.7 : 1 }}
           />
-          <button className={styles.sendBtn} onClick={sendMessage} disabled={!activeUserId}>
-            Send
+          <button className={styles.sendBtn} onClick={sendMessage} disabled={!activeUserId || isChecking}
+            style={{ 
+                opacity: isChecking ? 0.7 : 1, 
+                cursor: isChecking ? 'wait' : 'pointer' 
+            }}>
+            {isChecking ? "..." : "Send"}
           </button>
         </footer>
       </section>
