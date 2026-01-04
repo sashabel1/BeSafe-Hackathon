@@ -1,15 +1,24 @@
 /* App.module.css */
 .app {
   text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .appHeader {
   background-color: #53474F;
-  padding: 5px 30px 5px 30px;
+  padding: 5px 30px;
   color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;          
+  z-index: 1000;
 }
 
 .appLogo {
@@ -32,18 +41,12 @@
 }
 
 .main {
-  padding: 20px;
+  padding: 0;
   background-color: #FFDCE8;
-  height: 100vh;
+  margin-top: 50px;
+  flex: 1;
+  overflow: hidden;
 }
 
-.footer {
-  padding: 10px;
-  background-color: #53474F;
-  color: white;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  text-align: center;
-}
+
   
