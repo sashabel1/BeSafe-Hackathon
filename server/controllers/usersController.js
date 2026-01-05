@@ -3,8 +3,6 @@ import { User } from "../models/UserModel.js";
 // GET /users
 export async function getAllUsers(req, res) {
   try {
-    const count = await User.countDocuments();
-    console.log("users count:", count);
     const users = await User.find().select("-passwordHash");
     res.json(users);
   } catch {
