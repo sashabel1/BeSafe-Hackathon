@@ -4,6 +4,8 @@ import "dotenv/config";
 import { connectDB } from "./config/db.js";
 import usersRoutes from "./routes/usersRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
+
 
 
 
@@ -11,6 +13,7 @@ const app = express();
 app.use(cors()); 
 app.use(express.json());
 app.use("/users", usersRoutes);
+app.use("/conversations", conversationRoutes);
 app.use("/", aiRoutes);
 
 const PORT = process.env.PORT || 3000;
