@@ -272,7 +272,7 @@
 //   );
 // }
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState,useRef } from "react";
 import { toast } from "react-toastify";
 import styles from "../styles/ChatPage.module.css";
 
@@ -286,8 +286,9 @@ function safeName(u) {
 }
 
 export default function ChatPage() {
-  const MY_REAL_ID = "6957d9bf79cd5b94625a9d8d"; // TODO: להחליף ל-auth אמיתי
+  const MY_REAL_ID = "69544a18df4dbe449b9094b1"; // TODO: להחליף ל-auth אמיתי
   const me = useMemo(() => ({ id: MY_REAL_ID, name: "Me (Demo)" }), []);
+  const previousStrikesRef = useRef(0); // Ref to track previous strikes
 
   const API_BASE = useMemo(
     () => (import.meta.env.VITE_SERVER_API_URL || "").replace(/\/$/, ""),
@@ -490,7 +491,6 @@ export default function ChatPage() {
 
     setIsChecking(true);
     try {
-      // 1) validate (אם אין לך endpoint כזה, תמחקי את כל החלק הזה)
       const vRes = await fetch(`${API_BASE}/validate-message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -505,18 +505,28 @@ export default function ChatPage() {
       }
 
       if (vData && vData.allowed === false) {
-        toast.error(vData.reason || "Message blocked due to harmful content.");
-        if (vData.isBlocked) {
-          setTimeout(() => {
-            alert("Your account has been blocked due to repeated violations.");
-            window.location.href = "/";
-          }, 2000);
+        toast.error(vData.reason || "Message blocked due to harmful content.");
+        
+        if (typeof vData?.strikes === "number") {
+             previousStrikesRef.current = vData.strikes;
         }
-        return;
-      }
+
+        setInput(""); 
+
+        if (vData.isBlocked) {
+          setTimeout(() => {
+            alert("Your account has been blocked due to repeated violations.");
+            window.location.href = "/";
+          }, 2000);
+        }
+        return; 
+      }
 
       if (typeof vData?.strikes === "number" && vData.strikes > 0) {
-        toast.warning(`Warning: You have ${vData.strikes} strikes.`);
+         if (vData.strikes > previousStrikesRef.current) {
+            toast.warning(`Warning: You have ${vData.strikes} strikes.`);
+         }
+         previousStrikesRef.current = vData.strikes;
       }
 
       // 2) send message to conversation
@@ -531,6 +541,7 @@ export default function ChatPage() {
         toast.error(data?.error || "Failed to send message");
         return;
       }
+
 
       // 3) update messages cache
       setMessagesByConversation((prev) => ({
