@@ -9,4 +9,8 @@ const axiosInstance = axios.create({
   },
 });
 
+export const fetchUsers = () => axiosInstance.get('/users');
+export const toggleBlockUser = (id, isBlocked) => axiosInstance.put(`/users/${id}/block`, { isBlocked });
+export const updateStrikes = (id, strikes) => axiosInstance.put(`/users/${id}/strikes`, { strikes });
+
 export default axiosInstance;
