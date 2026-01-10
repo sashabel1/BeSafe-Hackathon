@@ -67,7 +67,8 @@ export async function createOrGetPersonalConversation(req, res) {
  */
 export async function createGroupConversation(req, res) {
   try {
-    const { creatorId, topic, participantIds } = req.body;
+    const { userId, topic, participantIds } = req.body;
+    const creatorId = userId;
 
     if (!creatorId) return res.status(400).json({ error: "Missing creatorId" });
     if (!topic || !topic.trim()) return res.status(400).json({ error: "Missing topic" });
@@ -78,7 +79,7 @@ export async function createGroupConversation(req, res) {
     // unique participants
     const unique = [...new Set(all)];
 
-    if (unique.length < 2) {
+    if (unique.length < 3) {
       return res.status(400).json({ error: "Group must have at least 2 participants" });
     }
 

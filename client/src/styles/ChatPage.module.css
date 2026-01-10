@@ -7,21 +7,27 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* ---------- Sidebar ---------- */
 .sidebar {
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* חשוב: גלילה רק בתוך userList */
 }
 
 .sidebarHeader {
   padding: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 0 0 auto; /* נשאר קבוע */
 }
 
 .userList {
   padding: 8px;
   overflow: auto;
+  flex: 1 1 auto; /* תופס את כל השטח שנשאר */
+  min-height: 0;  /* חשוב כדי שה-overflow יעבוד בתוך flex */
 }
 
 .userItem {
@@ -77,21 +83,27 @@
   white-space: nowrap;
 }
 
+/* ---------- Chat ---------- */
 .chat {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* חשוב: messages יגלול פנימה ולא ידחוף את inputBar */
 }
 
 .chatHeader {
   padding: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.02);
+  flex: 0 0 auto; 
 }
 
 .messages {
   padding: 16px;
-  flex: 1;
+  flex: 1 1 auto;
   overflow: auto;
+  min-height: 0;
+  scroll-behavior: smooth;
 }
 
 .msgRow {
@@ -126,6 +138,8 @@
   gap: 10px;
   padding: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .input {
