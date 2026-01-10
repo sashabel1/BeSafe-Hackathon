@@ -1,15 +1,41 @@
 import { Link, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
+import { useEffect, useState } from "react";
+import { apiGet } from "./lib/api";
+import { getToken, clearToken } from "./lib/auth";
+import RequireAuth from "./components/RequireAuth";
 import 'react-toastify/dist/ReactToastify.css';
-
 import styles from './styles/App.module.css';
+
 import HomePage from './pages/HomePage'
 import ChatPage from './pages/ChatPage'
 import AdminPage from './pages/AdminPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
+import ProfileSetupPage from "./pages/ProfileSetupPage";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    apiGet("/auth/me", token)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        clearToken();
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return null;
+
   return (
       <div className={styles.app}>
         <header className={styles.appHeader}>
@@ -21,11 +47,12 @@ function App() {
         </header>
         <main className={styles.main}>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/admin" element={<AdminPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/profile-setup" element={<ProfileSetupPage />} />
+            <Route path="/" element={<RequireAuth><HomePage /></RequireAuth>}/>
+            <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>}/>
+            <Route path="/admin" element={<RequireAuth><AdminPage /></RequireAuth>}/>
           </Routes>
         </main>
         <ToastContainer position="top-center" />

@@ -1,59 +1,52 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { apiPost } from "../../../login/clients/src/lib/api";
-// import { useAuthStore } from "../../../login/clients/src/pages/useAuthStore";
+import { apiPost } from "../lib/api";
+import { saveToken } from "../lib/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  // const { setToken, fetchMe } = useAuthStore();
-
   const [form, setForm] = useState({ email: "", password: "" });
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
-  // function onChange(e) {
-  //   const { name, value } = e.target;
-  //   setForm((p) => ({ ...p, [name]: value }));
-  // }
+  function onChange(e) {
+    const { name, value } = e.target;
+    setForm((p) => ({ ...p, [name]: value }));
+  }
 
-  // async function onSubmit(e) {
-  //   e.preventDefault();
+  async function onSubmit(e) {
+    e.preventDefault();
 
-  //   const email = form.email.trim();
-  //   const password = form.password;
+    const email = form.email.trim();
+    const password = form.password;
 
-  //   if (!email || !password) {
-  //     setStatus({ type: "error", message: "Please enter email and password." });
-  //     return;
-  //   }
+    if (!email || !password) {
+      setStatus({ type: "error", message: "Please enter email and password" });
+      return;
+    }
 
-  //   try {
-  //     setStatus({ type: "loading", message: "" });
+    try {
+      setStatus({ type: "loading", message: "" });
 
-     
-  //     const res = await apiPost("/api/auth/login", { email, password });
+      const res = await apiPost("/auth/login", {
+        email,
+        password,
+      });
 
-  //     if (!res?.token) {
-  //       throw new Error("Server did not return token");
-  //     }
+      saveToken(res.token);
 
-  //     setToken(res.token);
-
-     
-  //     const user = await fetchMe();
-
-  //     const complete =
-  //       user?.isProfileComplete ?? user?.profileComplete ?? false;
-
-  //     setStatus({ type: "idle", message: "" });
-  //     navigate(complete ? "/home" : "/profile-setup", { replace: true });
-  //   } catch (err) {
-  //     setStatus({
-  //       type: "error",
-  //       message: err?.message || "Login failed",
-  //     });
-  //   }
-  // }
+      if (res.user?.profileCompleted) {
+        navigate("/");
+      } else {
+        navigate("/profile-setup");
+      }
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: err.message || "Login failed",
+      });
+    }
+  }
 
   return (
     <div className="w-full max-w-md bg-slate-900/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
@@ -62,8 +55,7 @@ export default function LoginPage() {
         <p className="text-sm text-white/60 mt-1">Sign in to continue</p>
       </div>
 
-      <form className="space-y-4">
-        {/* onSubmit={onSubmit} className="space-y-4"> */}
+      <form onSubmit={onSubmit} className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-xs text-white/60">
             Email
@@ -74,7 +66,7 @@ export default function LoginPage() {
             type="email"
             autoComplete="email"
             value={form.email}
-            // onChange={onChange}
+            onChange={onChange}
             placeholder="name@gmail.com"
             className="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-cyan-400/50"
           />
@@ -90,7 +82,7 @@ export default function LoginPage() {
             type="password"
             autoComplete="current-password"
             value={form.password}
-            // onChange={onChange}
+            onChange={onChange}
             placeholder="••••••••"
             className="mt-1 w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-cyan-400/50"
           />
@@ -110,9 +102,9 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-white/60">
           Don’t have an account?{" "}
-          {/* <Link to="/signup" className="text-cyan-300 hover:underline">
+          <Link to="/signup" className="text-cyan-300 hover:underline">
             Sign up
-          </Link> */}
+          </Link>
         </p>
       </form>
     </div>
