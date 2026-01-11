@@ -1,10 +1,20 @@
-const API_URL = 'http://localhost:3000/analyze';
-
 //function to simulate AI content checking
 async function scanText(text) {
   
   try {
-    const response = await fetch(API_URL, {
+
+    const { API_URL } = await new Promise((resolve) =>
+      chrome.storage.local.get("API_URL", resolve)
+    );
+
+    const finalApiUrl = API_URL || "http://localhost:5000/analyze";
+
+    if (!finalApiUrl) {
+      console.error("API_URL not available");
+      return null;
+    }
+
+    const response = await fetch(finalApiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: text })

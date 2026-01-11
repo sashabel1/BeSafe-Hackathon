@@ -30,6 +30,9 @@ export default function Overlay() {
           break;
         case 3:
           addMessage("bot", "מעבירה אותך לרשת החברתית המוגנת שלנו... 🌐");
+          setTimeout(() => {
+            window.open("http://localhost:3000", "_blank");
+          }, 2000);
           break;
         case 4:
           addMessage("bot", "אני כאן. ספרי לי מה קרה? אני מקשיבה.");
@@ -47,7 +50,7 @@ export default function Overlay() {
     setInput("");
 
     try {
-      const res = await fetch("http://localhost:3000/chat", {
+      const res = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input })

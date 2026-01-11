@@ -1,27 +1,51 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { apiPost } from "../lib/api";
+import { saveToken } from "../lib/auth";
 
 export default function SignUpPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
+  const navigate = useNavigate();
+
   const handleSignup = async () => {
+    if (!fullName || !email || !password) {
+      setStatus({ type: "error", message: "Please fill all fields" });
+      return;
+    }
+
     try {
-      setStatus({ type: "loading", message: "Creating account..." });
+      setStatus({ type: "loading", message: "" });
 
-      await apiPost("/api/auth/signup", { fullName, email, password });
+      const res = await apiPost("/auth/signup", {
+        fullName,
+        email,
+        password,
+      });
 
+      // אם השרת מחזיר token
+      if (res.token) {
+        saveToken(res.token);
+        navigate("/profile-setup");
+        return;
+      }
+
+      // אם אין token (למשל signup עם אימות מייל)
       setStatus({
         type: "ok",
-        message: "✅ נשלח מייל אימות! תבדקי את האימייל ותלחצי על הקישור.",
+        message: "Account created! Please continue.",
       });
+
+      navigate("/profile-setup");
     } catch (err) {
-      setStatus({ type: "error", message: err.message || "Signup failed" });
+      setStatus({
+        type: "error",
+        message: err.message || "Signup failed",
+      });
     }
   };
 
