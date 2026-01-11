@@ -15,14 +15,11 @@ import SignUpPage from './pages/SignUpPage'
 import ProfileSetupPage from "./pages/ProfileSetupPage";
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !!getToken());
 
   useEffect(() => {
     const token = getToken();
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
 
     apiGet("/auth/me", token)
       .then(() => {
