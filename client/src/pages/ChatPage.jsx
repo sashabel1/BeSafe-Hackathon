@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { toast } from "react-toastify";
-import styles from "../styles/ChatPage.module.css";
+//import styles from "../styles/ChatPage.module.css";
 import { apiGet, apiPost } from "../lib/api"; 
+import "../styles/ChatPage.css";
 
 function formatTime(ts) {
   const d = new Date(ts);
@@ -370,17 +371,14 @@ export default function ChatPage() {
   if (!me) return <div style={{ padding: 20 }}>Please login</div>;
 
   return (
-    <div className={styles.page}>
+    <div className="chat-page-container">
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <div
-            className={styles.chatsTitle}
-            style={{ display: "flex", justifyContent: "space-between", gap: 8 }}
-          >
+      <aside className="chat-sidebar">
+        <div className="sidebar-header">
+          <div className="chats-title-row">
             <span>Chats</span>
             <button
-              className={styles.sendBtn}
+              className="pink-button"
               style={{ padding: "6px 10px", fontSize: 12 }}
               onClick={() => {
                 setShowNewChat((s) => !s);
@@ -390,20 +388,16 @@ export default function ChatPage() {
               {showNewChat ? "Close" : "New"}
             </button>
           </div>
-          <div className={styles.loggedInAs}>Logged in as: {me.name}</div>
+          <div className="logged-in-label">Logged in as: {me.name}</div>
         </div>
 
         {/* New Chat panel */}
         {showNewChat && (
-          <div style={{ padding: 10, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-            <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          <div className="new-chat-panel">
+            <div className="mode-toggle">
               <button
-                className={styles.sendBtn}
-                style={{
-                  padding: "6px 10px",
-                  fontSize: 12,
-                  opacity: newChatMode === "personal" ? 1 : 0.6,
-                }}
+                className={`pink-button ${newChatMode === "personal" ? "active" : "outline"}`}
+                style={{ flex: 1, padding: "8px", fontSize: 12 }}
                 onClick={() => {
                   setNewChatMode("personal");
                   setGroupTopic("");
@@ -414,12 +408,8 @@ export default function ChatPage() {
               </button>
 
               <button
-                className={styles.sendBtn}
-                style={{
-                  padding: "6px 10px",
-                  fontSize: 12,
-                  opacity: newChatMode === "group" ? 1 : 0.6,
-                }}
+                className={`pink-button ${newChatMode === "group" ? "active" : "outline"}`}
+                style={{ flex: 1, padding: "8px", fontSize: 12 }}
                 onClick={() => {
                   setNewChatMode("group");
                   setGroupTopic("");
@@ -433,24 +423,24 @@ export default function ChatPage() {
             {newChatMode === "group" && (
               <>
                 <input
-                  className={styles.input}
+                  className="chat-input"
+                  style={{ width: "100%", marginBottom: 10, boxSizing: "border-box" }}
                   value={groupTopic}
                   onChange={(e) => setGroupTopic(e.target.value)}
                   placeholder="Group name"
-                  style={{ marginBottom: 10 }}
                 />
-                <div style={{ fontSize: 12, opacity: 0.85, marginBottom: 8 }}>
+                <div style={{ fontSize: 12, opacity: 0.85, marginBottom: 8, color: "#ff69b4" }}>
                   Select at least 2 users
                 </div>
               </>
             )}
 
             {loadingUsers ? (
-              <div style={{ padding: 6 }}>Loading users...</div>
+              <div style={{ padding: 6, color: "#999" }}>Loading users...</div>
             ) : usersError ? (
               <div style={{ padding: 6, color: "crimson" }}>{usersError}</div>
             ) : users.length === 0 ? (
-              <div style={{ padding: 6 }}>No users found</div>
+              <div style={{ padding: 6, color: "#999" }}>No users found</div>
             ) : (
               <div
                 style={{
@@ -465,16 +455,15 @@ export default function ChatPage() {
                   newChatMode === "personal" ? (
                     <button
                       key={u.id}
-                      className={styles.userItem}
+                      className="user-item"
                       onClick={() => openPersonalChat(u.id)}
-                      style={{ textAlign: "left" }}
                     >
                       {u.name}
                     </button>
                   ) : (
                     <label
                       key={u.id}
-                      className={styles.userItem}
+                      className="user-item"
                       style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
                     >
                       <input
@@ -491,8 +480,7 @@ export default function ChatPage() {
 
             {newChatMode === "group" && (
               <button
-                className={styles.sendBtn}
-                style={{ marginTop: 10, width: "100%" }}
+                className="create-group-btn"
                 onClick={createGroupChat}
                 disabled={!groupTopic.trim() || selectedUserIds.length < 2}
               >
@@ -502,39 +490,39 @@ export default function ChatPage() {
           </div>
         )}
 
-        <div className={styles.userList}>
+        <div className="chat-user-list">
           {loadingConversations ? (
-            <div style={{ padding: 12 }}>Loading chats...</div>
+            <div style={{ padding: 12, color: "#999" }}>Loading chats...</div>
           ) : conversationsError ? (
             <div style={{ padding: 12, color: "crimson" }}>{conversationsError}</div>
           ) : conversationList.length === 0 ? (
-            <div style={{ padding: 12 }}>No conversations yet. Click “New” to start.</div>
+            <div style={{ padding: 12, color: "#999" }}>No conversations yet. Click “New” to start.</div>
           ) : (
             conversationList.map((c) => (
               <button
                 key={c._id}
                 onClick={() => setActiveConversationId(c._id)}
-                className={`${styles.userItem} ${
-                  String(c._id) === String(activeConversationId) ? styles.userItemActive : ""
+                className={`user-item ${
+                  String(c._id) === String(activeConversationId) ? "active" : ""
                 }`}
               >
-                <div className={styles.userRow}>
-                  <div className={styles.avatar}>{conversationTitle(c).slice(0, 1)}</div>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", width: "100%" }}>
+                  <div className="chat-avatar">{conversationTitle(c).slice(0, 1)}</div>
 
-                  <div className={styles.userMeta}>
-                    <div className={styles.userName}>
+                  <div style={{ flex: 1, textAlign: "left" }}>
+                    <div className="chat-user-name">
                       {conversationTitle(c)}{" "}
                       <span
-                        className={styles.statusDot}
+                        className="status-dot"
                         style={{ background: "#2ecc71" }}
                         title={c.type}
                       />
                     </div>
 
-                    <div className={styles.preview}>
+                    <div style={{ fontSize: "12px", color: "#999", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {conversationPreview(c)}
                       {c.type === "group" && (
-                        <div style={{ fontSize: 12, opacity: 0.75, marginTop: 2 }}>
+                        <div style={{ fontSize: 10, opacity: 0.75, marginTop: 2 }}>
                           {groupMembersLabel(c, { maxNames: 2 })}
                         </div>
                       )}
@@ -548,13 +536,13 @@ export default function ChatPage() {
       </aside>
 
       {/* Chat area */}
-      <section className={styles.chat}>
-        <header className={styles.chatHeader}>
-          <div className={styles.activeUserName}>
+      <section className="chat-window">
+        <header className="chat-window-header">
+          <div className="active-user-name">
             {activeConversation ? conversationTitle(activeConversation) : "Chat"}
           </div>
 
-          <div className={styles.activeUserStatus}>
+          <div className="active-user-status">
             {activeConversation
               ? activeConversation.type === "group"
                 ? groupMembersLabel(activeConversation, { maxNames: 4 })
@@ -563,34 +551,33 @@ export default function ChatPage() {
           </div>
         </header>
 
-        <div className={styles.messages}>
+        <div className="chat-messages-area">
           {!activeConversationId ? (
-            <div className={styles.emptyState}>Select a chat to start</div>
+            <div style={{ textAlign: "center", color: "#ff85a2", marginTop: 40, fontWeight: 600 }}>Select a chat to start</div>
           ) : activeMessages.length === 0 ? (
-            <div className={styles.emptyState}>No messages yet. Say hi 👋</div>
+            <div style={{ textAlign: "center", color: "#ff85a2", marginTop: 40, fontWeight: 600 }}>No messages yet. Say hi 👋</div>
           ) : (
             activeMessages.map((m) => (
               <div
                 key={m.id}
-                className={styles.msgRow}
-                style={{ justifyContent: m.sender === "me" ? "flex-end" : "flex-start" }}
+                className="message-row"
               >
                 <div
-                  className={`${styles.bubble} ${
-                    m.sender === "me" ? styles.bubbleMe : styles.bubbleThem
+                  className={`message-bubble ${
+                    m.sender === "me" ? "msg-me" : "msg-them"
                   }`}
                 >
                   <div>{m.text}</div>
-                  <div className={styles.time}>{formatTime(m.ts)}</div>
+                  <div className="message-time">{formatTime(m.ts)}</div>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        <footer className={styles.inputBar}>
+        <footer className="chat-input-bar">
           <input
-            className={styles.input}
+            className="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={onKeyDown}
@@ -605,7 +592,7 @@ export default function ChatPage() {
             style={{ opacity: isChecking ? 0.7 : 1 }}
           />
           <button
-            className={styles.sendBtn}
+            className="send-button"
             onClick={sendMessage}
             disabled={!activeConversationId || isChecking}
             style={{
