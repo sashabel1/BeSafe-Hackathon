@@ -1,6 +1,6 @@
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { apiGet } from "./lib/api";
 import { getToken, clearToken } from "./lib/auth";
 import RequireAuth from "./components/RequireAuth";
@@ -16,32 +16,37 @@ import SignUpPage from "./pages/SignUpPage";
 function App() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
-  const token = useMemo(() => getToken(), [loading]);
+  const token = getToken();
+
+  const [checkingToken, setCheckingToken] = useState(() => !!token);
 
   useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
 
-    // יש טוקן - בודקים שהוא תקף
-    apiGet("/auth/me")
-      .then(() => setLoading(false))
-      .catch(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        await apiGet("/auth/me");
+      } catch (e) {
         clearToken();
-        setLoading(false);
-        navigate("/login");
-      });
+        if (!cancelled) navigate("/login");
+      } finally {
+        if (!cancelled) setCheckingToken(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [token, navigate]);
 
   function onLogout() {
     clearToken();
-    setLoading(false);
     navigate("/login");
   }
 
-  if (loading) return null;
+  if (checkingToken) return null;
 
   const isAuthed = !!getToken();
 
@@ -54,14 +59,10 @@ function App() {
           <Link to="/admin" className={styles.appLink}>Admin</Link>
 
           {isAuthed && (
-          <button
-            onClick={onLogout}
-            className={styles.logoutButton}
-          >
-            Logout
-          </button>
-        )}
-
+            <button onClick={onLogout} className={styles.logoutButton}>
+              Logout
+            </button>
+          )}
         </nav>
       </header>
 
