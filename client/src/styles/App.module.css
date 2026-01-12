@@ -45,6 +45,29 @@
   text-decoration: underline;
 }
 
+.logoutButton {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.logoutButton:hover {
+  background: rgba(255, 0, 0, 0.6);
+  transform: scale(1.03);
+}
+
 .main {
   padding: 0;
   background-color: #FFDCE8;
@@ -52,6 +75,8 @@
   flex: 1;
   overflow-y: auto;
 }
+
+
 
 
   

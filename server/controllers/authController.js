@@ -87,6 +87,7 @@ export const login = async (req, res) => {
         profileCompleted: user.profileCompleted,
         strikes: user.strikes,
         isBlocked: user.isBlocked,
+        isAdmin: user.isAdmin,
       },
     });
   } catch (err) {

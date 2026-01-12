@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiPost } from "../lib/api";
-import { saveToken } from "../lib/auth";
+import { saveIsAdmin, saveToken } from "../lib/auth";
 import "../styles/LoginPage.css";
 
 export default function LoginPage() {
@@ -35,8 +35,13 @@ export default function LoginPage() {
       });
 
       saveToken(res.token);
-
-      navigate("/");
+      saveIsAdmin(res.user.isAdmin);
+      
+      if (res.user && res.user.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
 
     } catch (err) {
       setStatus({

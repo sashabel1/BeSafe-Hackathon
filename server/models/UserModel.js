@@ -14,10 +14,10 @@ const userSchema = new mongoose.Schema(
 
     //property to track user violations 
     strikes: { type: Number, default: 0 }, 
-    isBlocked: { type: Boolean, default: false }    
+    isBlocked: { type: Boolean, default: false } ,
+    isAdmin: { type: Boolean, default: false } 
   },
   { timestamps: true } // createdAt, updatedAt
 );
 
-// collection יהיה "users" אוטומטית
 export const User = mongoose.model("User", userSchema);
