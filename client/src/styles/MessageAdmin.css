@@ -1,0 +1,121 @@
+.help-container {
+    direction: rtl;
+    padding-top: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.help-container h1 {
+    color: #ff1493; 
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.headline p {
+  font-size: 1.05rem;   /* היה גדול מדי */
+  margin-top: 6px;      /* מצמיד לכותרת */
+  margin-bottom: 0;
+  color: #4b5563;
+}
+
+.form-div {
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
+  border: 1px solid #ffe4e1;
+  margin: 40px auto 0 auto; /* מרכז אופקית */
+}
+
+.form-div form label {
+  display: block;
+  font-size: 20px;
+  color: #ff85a2;
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.form-div input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ffe4e1;
+  background-color: #fffafb;
+  color: #333;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.form-div input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+.form-div textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ffe4e1;
+  background-color: #fffafb;
+  color: #333;
+  font-size: 15px;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 140px;
+  transition: all 0.3s ease;
+  margin-bottom: 24px;
+}
+
+.form-div textarea:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+.send-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff69b4, #ff85a2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.send-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.success-message {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.success-message h2 {
+  color: #ff69b4;
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+}
+
+.success-message p {
+  color: #4b5563;
+  font-size: 1.1rem;
+}
+
+.form-div input,
+.form-div textarea {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+

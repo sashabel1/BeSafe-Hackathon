@@ -7,11 +7,12 @@ import RequireAuth from "./components/RequireAuth";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles/App.module.css";
 
-import WelcomePage from "./pages/WelcomePage";
-import ChatPage from "./pages/ChatPage";
-import AdminPage from "./pages/AdminPage";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
+import WelcomePage from './pages/WelcomePage'
+import ChatPage from './pages/ChatPage'
+import AdminPage from './pages/AdminPage'
+import LoginPage from './pages/LoginPage'
+import SignUpPage from './pages/SignUpPage'
+import MessageAdmin from "./pages/MessageAdmin";
 
 function App() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ function App() {
               Logout
             </button>
           )}
+            <Link to="/help" className={styles.appLink}>Help</Link>
         </nav>
       </header>
 
@@ -76,6 +78,7 @@ function App() {
           <Route path="/" element={<RequireAuth><WelcomePage /></RequireAuth>} />
           <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>} />
           <Route path="/admin" element={<RequireAuth><AdminPage /></RequireAuth>} />
+            <Route path="/help" element={<RequireAuth><MessageAdmin /></RequireAuth>}/>
         </Routes>
       </main>
 

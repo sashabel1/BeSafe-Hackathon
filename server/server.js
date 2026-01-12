@@ -6,10 +6,12 @@ import usersRoutes from "./routes/usersRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import conversationRoutes from "./routes/conversationRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import adminMessagesRoutes from "./routes/adminMessageRoute.js";
 
 const app = express();
 app.use(cors()); 
 app.use(express.json());
+app.use("/api/admin-messages", adminMessagesRoutes);
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/conversations", conversationRoutes);
