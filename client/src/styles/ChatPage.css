@@ -21,6 +21,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 0;
 }
 
 .sidebar-header {
@@ -144,6 +145,7 @@
     flex-direction: column;
     height: 100%;
     background: white;
+    min-height: 0;
 }
 
 .chat-window-header {
@@ -172,6 +174,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-height: 0;
 }
 
 .message-row {
@@ -182,7 +185,7 @@
 .message-bubble {
     max-width: 65%;
     padding: 12px 16px;
-    border-radius: 4px; /* מרובע כפי שביקשת */
+    border-radius: 4px; 
     font-size: 14.5px;
     line-height: 1.4;
     box-shadow: 0 2px 5px rgba(0,0,0,0.02);
@@ -270,7 +273,6 @@
     box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
-/* פאנל יצירת קבוצה חדשה */
 .new-chat-panel {
     padding: 15px;
     background-color: #fffafb;
@@ -304,7 +306,7 @@
     width: 100%;
     margin-top: 10px;
     padding: 12px;
-    background: #2ecc71; /* ירוק ליצירה */
+    background: #2ecc71; 
     color: white;
     border: none;
     border-radius: 12px;
