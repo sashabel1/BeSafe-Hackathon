@@ -1,16 +1,39 @@
 import "../styles/MessageAdmin.css";
 import { useState } from "react";
+import { getToken } from "../lib/auth";
 
 export default function MessageAdmin() {
     const [submitted, setSubmitted] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    // כאן בעתיד תשלחי לשרת / Firebase וכו'
-    setSubmitted(true);
-  };
+        try {
+            const token = getToken();
 
+            const response = await fetch("/api/admin-messages", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                title,
+                text: content,
+            }),
+            });
+
+            if (!response.ok) {
+            throw new Error("Failed to send message");
+            }
+
+            setSubmitted(true);
+        } catch (error) {
+            console.error(error);
+        }
+        };
 
   return (
     <div className="help-container">
@@ -22,20 +45,19 @@ export default function MessageAdmin() {
         <div className="form-div">
             {!submitted ? (
                 <form onSubmit={handleSubmit}>
-                <label htmlFor="title">נושא הפניה:</label>
-                <input id="title" name="title" />
+                    <label htmlFor="title">נושא הפניה:</label>
+                    <input id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                    <label htmlFor="content">תוכן הפניה:</label>
+                    <textarea id="content" name="content" rows="6" value={content} onChange={(e) => setContent(e.target.value)}/>
 
-                <label htmlFor="content">תוכן הפניה:</label>
-                <textarea id="content" name="content" rows="6" />
-
-                <button type="submit" className="send-button">
-                    שלח
-                </button>
+                    <button type="submit" className="send-button">
+                        שלח
+                    </button>
                 </form>
             ) : (
                 <div className="success-message">
-                <h2>הטופס נשלח בהצלחה!</h2>
-                <p>האדמיניות שלנו יחזרו אליך בהקדם 💗</p>
+                    <h2>הטופס נשלח בהצלחה!</h2>
+                    <p>האדמיניות שלנו יחזרו אליך בהקדם 💗</p>
                 </div>
             )}
         </div>
