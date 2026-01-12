@@ -30,7 +30,7 @@ export default function SignUpPage() {
 
       if (res.token) {
         saveToken(res.token);
-        navigate("/profile-setup");
+        navigate("/");
         return;
       }
 
