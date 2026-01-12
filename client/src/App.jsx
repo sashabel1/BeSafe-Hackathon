@@ -2,7 +2,7 @@ import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { apiGet } from "./lib/api";
-import { getToken, clearToken } from "./lib/auth";
+import { getToken, clearToken, getIsAdmin } from "./lib/auth";
 import RequireAuth from "./components/RequireAuth";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles/App.module.css";
@@ -17,6 +17,8 @@ function App() {
   const navigate = useNavigate();
 
   const token = getToken();
+  const isAdmin = getIsAdmin();
+ 
 
   const [checkingToken, setCheckingToken] = useState(() => !!token);
 
@@ -56,7 +58,8 @@ function App() {
         <nav className={styles.appNav}>
           <Link to="/" className={styles.appLink}>Home</Link>
           <Link to="/chat" className={styles.appLink}>Chat</Link>
-          <Link to="/admin" className={styles.appLink}>Admin</Link>
+          
+          {isAdmin && <Link to="/admin" className={styles.appLink}>Admin</Link>}
 
           {isAuthed && (
             <button onClick={onLogout} className={styles.logoutButton}>

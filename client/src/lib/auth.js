@@ -11,3 +11,11 @@ export function getToken() {
 export function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
 }
+
+export function saveIsAdmin(isAdmin) {
+  localStorage.setItem("is_admin", isAdmin);
+}
+
+export function getIsAdmin() {
+  return localStorage.getItem("is_admin") === "true";
+}
