@@ -36,7 +36,11 @@ export default function LoginPage() {
 
       saveToken(res.token);
 
-      navigate("/");
+      if (res.user && res.user.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
 
     } catch (err) {
       setStatus({
