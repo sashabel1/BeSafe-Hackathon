@@ -59,7 +59,8 @@ function App() {
         <nav className={styles.appNav}>
           <Link to="/" className={styles.appLink}>Home</Link>
           <Link to="/chat" className={styles.appLink}>Chat</Link>
-          
+          <Link to="/help" className={styles.appLink}>Help</Link>
+
           {isAdmin && <Link to="/admin" className={styles.appLink}>Admin</Link>}
 
           {isAuthed && (
@@ -67,7 +68,6 @@ function App() {
               Logout
             </button>
           )}
-            <Link to="/help" className={styles.appLink}>Help</Link>
         </nav>
       </header>
 

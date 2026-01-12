@@ -23,4 +23,18 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 
+router.get("/", requireAuth, async (req, res) => {
+  try {
+    const messages = await AdminMessage
+      .find()
+      .populate("senderId", "email nickname")
+      .sort({ createdAt: -1 });
+
+    res.json(messages);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch messages" });
+  }
+});
+
 export default router;

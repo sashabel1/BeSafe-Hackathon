@@ -1,5 +1,3 @@
-
-
 const API_BASE = (import.meta.env.VITE_SERVER_API_URL || "").replace(/\/$/, "");
 
 function getTokenFromStorage() {
