@@ -39,7 +39,7 @@ export async function chat(req, res) {
 export async function validateOutgoingMessage(req, res) {
   try {
     const { userId, text } = req.body;
-
+    console.log(userId);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
