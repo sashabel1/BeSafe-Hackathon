@@ -6,6 +6,11 @@
   flex-direction: column;
 }
 
+.container {
+  min-height: 100vh; 
+  overflow: visible; 
+}
+
 .appHeader {
   background-color: #53474F;
   padding: 5px 30px;
@@ -45,7 +50,7 @@
   background-color: #FFDCE8;
   margin-top: 50px;
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 
