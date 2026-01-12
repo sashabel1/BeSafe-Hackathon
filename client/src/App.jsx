@@ -1,6 +1,6 @@
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiGet } from "./lib/api";
 import { getToken, clearToken } from "./lib/auth";
 import RequireAuth from "./components/RequireAuth";
@@ -16,40 +16,34 @@ import SignUpPage from "./pages/SignUpPage";
 function App() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(() => !!getToken());
-  const [isAuthed, setIsAuthed] = useState(() => !!getToken());
+  const [loading, setLoading] = useState(true);
+  const token = useMemo(() => getToken(), [loading]);
 
   useEffect(() => {
-    const token = getToken();
-
-    // אין טוקן => לא מחובר
     if (!token) {
-      setIsAuthed(false);
       setLoading(false);
       return;
     }
 
-    // יש טוקן => בודקים אם הוא תקף
-    apiGet("/auth/me", token)
-      .then(() => {
-        setIsAuthed(true);
-        setLoading(false);
-      })
+    // יש טוקן - בודקים שהוא תקף
+    apiGet("/auth/me")
+      .then(() => setLoading(false))
       .catch(() => {
         clearToken();
-        setIsAuthed(false);
         setLoading(false);
         navigate("/login");
       });
-  }, [navigate]);
+  }, [token, navigate]);
 
   function onLogout() {
     clearToken();
-    setIsAuthed(false);
+    setLoading(false);
     navigate("/login");
   }
 
   if (loading) return null;
+
+  const isAuthed = !!getToken();
 
   return (
     <div className={styles.app}>
@@ -60,10 +54,14 @@ function App() {
           <Link to="/admin" className={styles.appLink}>Admin</Link>
 
           {isAuthed && (
-            <button onClick={onLogout} className={styles.logoutButton}>
-              Logout
-              </button>
-          )}
+          <button
+            onClick={onLogout}
+            className={styles.logoutButton}
+          >
+            Logout
+          </button>
+        )}
+
         </nav>
       </header>
 
