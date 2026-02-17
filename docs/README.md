@@ -1,25 +1,47 @@
-### Prerequisites
-* Node.js installed
-* OpenAI API Key
+# BeSafe - AI Online Safety Guardian 🛡️
 
-### Backend Setup
-1. `cd server`
-2. `npm install`
-3. Add `.env` file and add `OPENAI_API_KEY=your_openai_api_key_here`
-4. `node server.js`
+**BeSafe** is an AI-powered Chrome extension designed to protect users from offensive content on the web in real-time. When harmful language is detected, the system intervenes by offering immediate emotional support via a chatbot or directing the user to a safe, toxicity-free social network.
 
-### Chrome Extension Installation
-1. Open Google Chrome and navigate to `chrome://extensions`
-2. Enable **Developer mode** (toggle in the top right corner)
-3. Click **Load unpacked** and select the `extension` folder from this project
+---
 
-### How To Test
-1. Open any website (If the site was already open, refresh the page to inject the scanner)
-2. To simulate a harmful message:
-   * Right-click any text on the page and select **Inspect**
-   * Change the text to something harmful
-   * Press **Enter**
-3. Wait 3 seconds
-4. A red notification alert should appear in the bottom-right corner of your screen
+## 📸 Project Screenshots
 
-![Alert Example](assets/alert.png)
+| **Supportive Chatbot** | **SafePlace Network** | **Admin Dashboard** |
+|:---:|:---:|:---:|
+| ![Chatbot Interface](assets/chatBot.png) | ![Safe Social Network](assets/safePlace.png) | ![Admin Panel](assets/admin.png) |
+| *An empathetic AI bot offering immediate support.* | *A safe, moderated social environment.* | *Management of users and safety blocks.* |
+
+---
+
+## 🚀 Key Features
+
+* **Real-Time AI Scanning:** The Chrome extension continuously scans webpage text using OpenAI to detect offensive or harmful language instantly.
+* **Smart Intervention:** Upon detection, a pop-up offers the user a choice:
+    * **🤖 Chatbot:** A gentle, purpose-driven AI companion designed to de-escalate the situation and provide support.
+    * **🏡 SafePlace:** A secure social network alternative with built-in blocking mechanisms against toxicity.
+* **Admin Dashboard:** A comprehensive panel for administrators to manage user safety scores, review blocks, and handle system messages.
+* **Secure Authentication:** Complete user system with Login/Sign-up capabilities.
+
+## 🛠️ Tech Stack
+
+* **Frontend:** React, Vite, Tailwind CSS.
+* **Backend:** Node.js, Express.
+* **Database:** MongoDB.
+* **AI Engine:** OpenAI API (GPT Models).
+* **Extension:** Chrome Manifest V3.
+
+---
+
+## ⚙️ Installation & Setup
+
+Follow these steps to run the project locally:
+
+### 1. Prerequisites
+* Node.js installed.
+* MongoDB URI.
+* OpenAI API Key.
+
+### 2. Backend Setup (Server)
+```bash
+cd server
+npm install
