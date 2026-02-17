@@ -2,16 +2,23 @@
 
 **BeSafe** is an AI-powered Chrome extension designed to protect users from offensive content on the web in real-time. When harmful language is detected, the system intervenes by offering immediate emotional support via a chatbot or directing the user to a safe, toxicity-free social network.
 
----
-
 ## 📸 Project Screenshots
 
-| **Supportive Chatbot** | **SafePlace Network** | **Admin Dashboard** |
-|:---:|:---:|:---:|
-| ![Chatbot Interface](assets/chatBot.jpg) | ![Safe Social Network](assets/safePlace.jpg) | ![Admin Panel](assets/admin.jpg) |
-| *An empathetic AI bot offering immediate support.* | *A safe, moderated social environment.* | *Management of users and safety blocks.* |
+### **Supportive Chatbot**
+![Chatbot Interface](assets/chatBot.jpg)
+*An empathetic AI bot offering immediate support.*
 
----
+<br>
+
+### **SafePlace Network**
+![Safe Social Network](assets/safePlace.jpg)
+*A safe, moderated social environment.*
+
+<br>
+
+### **Admin Dashboard**
+![Admin Panel](assets/admin.jpg)
+*Management of users and safety blocks.*
 
 ## 🚀 Key Features
 
