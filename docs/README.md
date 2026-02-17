@@ -28,6 +28,8 @@
 * **Real-Time AI Scanning:** The Chrome extension continuously scans webpage text using OpenAI to detect offensive or harmful language instantly.
 * **Smart Intervention:** Upon detection, a pop-up offers the user a choice:
     * **🤖 Chatbot:** A gentle, purpose-driven AI companion designed to de-escalate the situation and provide support.
+    * **📞 Emergency Hotlines:** Direct access to a list of immediate assistance numbers within the chat.
+    * **👨‍👩‍👧‍👦 Parental Notification:** *(Future Feature)* A planned option to automatically notify parents or guardians.
     * **🏡 SafePlace:** A secure social network alternative with built-in blocking mechanisms against toxicity.
 * **Admin Dashboard:** A comprehensive panel for administrators to manage user safety scores, review blocks, and handle system messages.
 * **Secure Authentication:** Complete user system with Login/Sign-up capabilities.
