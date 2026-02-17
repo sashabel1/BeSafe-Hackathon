@@ -5,19 +5,19 @@
 ## 📸 Project Screenshots
 
 ### **Supportive Chatbot**
-![Chatbot Interface](assets/chatBot.png)
+![Chatbot Interface](/assets/chatBot.png)
 *An empathetic AI bot offering immediate support.*
 
 <br>
 
 ### **SafePlace Network**
-![Safe Social Network](assets/safePlace.png)
+![Safe Social Network](/assets/safePlace.png)
 *A safe, moderated social environment.*
 
 <br>
 
 ### **Admin Dashboard**
-![Admin Panel](assets/adminPage.png)
+![Admin Panel](/assets/adminPage.png)
 *Management of users and safety blocks.*
 
 ## 🚀 Key Features
