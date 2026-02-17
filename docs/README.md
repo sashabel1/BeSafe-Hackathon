@@ -8,7 +8,7 @@
 
 | **Supportive Chatbot** | **SafePlace Network** | **Admin Dashboard** |
 |:---:|:---:|:---:|
-| ![Chatbot Interface](assets/chatBot.png) | ![Safe Social Network](assets/safePlace.png) | ![Admin Panel](assets/admin.png) |
+| ![Chatbot Interface](assets/chatBot.jpg) | ![Safe Social Network](assets/safePlace.jpg) | ![Admin Panel](assets/admin.jpg) |
 | *An empathetic AI bot offering immediate support.* | *A safe, moderated social environment.* | *Management of users and safety blocks.* |
 
 ---
